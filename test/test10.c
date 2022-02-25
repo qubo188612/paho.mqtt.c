@@ -72,7 +72,7 @@ struct Options
 {
 	"tcp://localhost:1883",
 	NULL,
-	"tcp://localhost:1884",
+	"tcp://localhost:1883",
 	0,
 	0,
 	0,

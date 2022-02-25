@@ -963,7 +963,8 @@ void MQTTAsync_checkDisconnect(MQTTAsync handle, MQTTAsync_command* command)
 		else if (command->onSuccess5)
 		{
 			MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
-
+			data.alt.sub.reasonCodeCount=0;
+			data.alt.sub.reasonCodes=0;
 			data.reasonCode = MQTTASYNC_SUCCESS;
 			Log(TRACE_MIN, -1, "Calling disconnect complete for client %s", m->c->clientID);
 			(*(command->onSuccess5))(command->context, &data);
@@ -1112,7 +1113,8 @@ void MQTTAsync_writeComplete(int socket, int rc)
 						else if (command->onSuccess5)
 						{
 							MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
-
+							data.alt.sub.reasonCodeCount=0;
+							data.alt.sub.reasonCodes=0;
 							data.token = command->token;
 							data.alt.pub.destinationName = command->details.pub.destinationName;
 							data.alt.pub.message.payload = command->details.pub.payload;
@@ -1423,7 +1425,8 @@ static int MQTTAsync_processCommand(void)
 				else if (command->command.onSuccess5)
 				{
 					MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
-
+					data.alt.sub.reasonCodeCount=0;
+					data.alt.sub.reasonCodes=0;
 					data.token = command->command.token;
 					data.alt.pub.destinationName = command->command.details.pub.destinationName;
 					data.alt.pub.message.payload = command->command.details.pub.payload;
@@ -2062,6 +2065,8 @@ thread_return_type WINAPI MQTTAsync_receiveThread(void* n)
 						else if (m->connect.onSuccess5)
 						{
 							MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
+							data.alt.sub.reasonCodeCount=0;
+							data.alt.sub.reasonCodes=0;
 							Log(TRACE_MIN, -1, "Calling connect success for client %s", m->c->clientID);
 							if (m->serverURIcount > 0)
 								data.alt.connect.serverURI = m->serverURIs[m->connect.details.conn.currentURI];
@@ -2224,7 +2229,8 @@ thread_return_type WINAPI MQTTAsync_receiveThread(void* n)
 								{
 									MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
 									enum MQTTReasonCodes* array = NULL;
-
+									data.alt.sub.reasonCodeCount=0;
+									data.alt.sub.reasonCodes=0;
 									data.reasonCode = *(enum MQTTReasonCodes*)(unsub->reasonCodes->first->content);
 									data.alt.unsub.reasonCodeCount = unsub->reasonCodes->count;
 									if (unsub->reasonCodes->count > 1)
@@ -2872,7 +2878,7 @@ static MQTTPacket* MQTTAsync_cycle(int* sock, unsigned long timeout, int* rc)
 {
 	struct timeval tp = {0L, 0L};
 	MQTTPacket* pack = NULL;
-
+	int rc1;
 	FUNC_ENTRY;
 	if (timeout > 0L)
 	{
@@ -2880,7 +2886,7 @@ static MQTTPacket* MQTTAsync_cycle(int* sock, unsigned long timeout, int* rc)
 		tp.tv_usec = (timeout % 1000) * 1000; /* this field is microseconds! */
 	}
 
-	int rc1 = 0;
+	rc1 = 0;
 #if defined(OPENSSL)
 	if ((*sock = SSLSocket_getPendingRead()) == -1)
 	{
@@ -2984,7 +2990,8 @@ static MQTTPacket* MQTTAsync_cycle(int* sock, unsigned long timeout, int* rc)
 							else if (command->command.onSuccess5 && ackrc < MQTTREASONCODE_UNSPECIFIED_ERROR)
 							{
 								MQTTAsync_successData5 data = MQTTAsync_successData5_initializer;
-
+								data.alt.sub.reasonCodeCount=0;
+								data.alt.sub.reasonCodes=0;
 								data.token = command->command.token;
 								data.alt.pub.destinationName = command->command.details.pub.destinationName;
 								data.alt.pub.message.payload = command->command.details.pub.payload;

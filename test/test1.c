@@ -56,9 +56,9 @@ struct Options
 	int iterations;
 } options =
 {
-	"tcp://mqtt.eclipse.org:1883",
+	"tcp://localhost:11883",
 	NULL,
-	"tcp://localhost:1883",
+	"tcp://localhost:11883",
 	0,
 	0,
 	0,
@@ -306,7 +306,7 @@ void test1_sendAndReceive(MQTTClient* c, int qos, char* test_topic)
 
 	MyLog(LOGA_DEBUG, "%d messages at QoS %d", iterations, qos);
 	pubmsg.payload = "a much longer message that we can shorten to the extent that we need to payload up to 11";
-	pubmsg.payloadlen = 11;
+	pubmsg.payloadlen = strlen(pubmsg.payload);
 	pubmsg.qos = qos;
 	pubmsg.retained = 0;
 
@@ -362,7 +362,7 @@ int test1(struct Options options)
 	MQTTClient_connectOptions opts = MQTTClient_connectOptions_initializer;
 	MQTTClient_willOptions wopts = MQTTClient_willOptions_initializer;
 	int rc = 0;
-	char* test_topic = "C client test1";
+	char* test_topic = "boschda";
 
 	fprintf(xml, "<testcase classname=\"test1\" name=\"single threaded client using receive\"");
 	global_start_time = start_clock();
@@ -380,8 +380,8 @@ int test1(struct Options options)
 
 	opts.keepAliveInterval = 20;
 	opts.cleansession = 1;
-	opts.username = "testuser";
-	opts.password = "testpassword";
+	opts.username = "admin";
+	opts.password = "public";
 	opts.MQTTVersion = options.MQTTVersion;
 	if (options.haconnections != NULL)
 	{

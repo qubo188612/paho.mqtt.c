@@ -627,7 +627,7 @@ typedef struct
 	} alt;
 } MQTTAsync_successData5;
 
-#define MQTTAsync_successData5_initializer {{'M', 'Q', 'S', 'D'}, 0, 0, MQTTREASONCODE_SUCCESS, MQTTProperties_initializer, {.sub={0,0}}}
+#define MQTTAsync_successData5_initializer {{'M', 'Q', 'S', 'D'}, 0, 0, MQTTREASONCODE_SUCCESS, MQTTProperties_initializer, {{0,0}}}
 
 /**
  * This is a callback function. The client application
