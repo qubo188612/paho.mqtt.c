@@ -112,9 +112,6 @@ void* MQTTPacket_Factory(int MQTTVersion, networkHandles* net, int* error)
 	const size_t headerWsFramePos = WebSocket_framePos();
 	FUNC_ENTRY;
 
-	*error = SOCKET_ERROR;  /* indicate whether an error occurred, or not */
-	
-
 	/* read the packet data from the socket */
 	*error = WebSocket_getch(net, &header.byte);
 	if (*error != TCPSOCKET_COMPLETE)   /* first byte is the header byte */
